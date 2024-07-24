@@ -14,14 +14,13 @@ def main():
     data = pd.read_csv(file_path, encoding='cp949')  # 한글 인코딩 처리
 
     # 열 이름 확인
-    st.write("데이터 열 이름: ", data.columns)
+    st.write("데이터 열 이름: ", data.columns.tolist())
 
-    # 예시 데이터 컬럼명이 다를 수 있으므로, 컬럼명을 확인 후 적절히 수정해야 합니다.
-    # 여기서는 '행정구역', '10세', '11세', '12세', '13세', '14세' 컬럼이 있다고 가정합니다.
-    # 실제로 존재하는 컬럼명을 바탕으로 수정합니다.
-    region_col = '행정구역별(읍면동)'
-    age_cols = ['2023년06월_10세', '2023년06월_11세', '2023년06월_12세', '2023년06월_13세', '2023년06월_14세']
+    # 필요한 열 이름 설정 (예: '행정구역별(읍면동)', '2023년06월_10세', '2023년06월_11세', '2023년06월_12세', '2023년06월_13세', '2023년06월_14세')
+    region_col = '행정구역별(읍면동)'  # 실제 파일의 열 이름으로 수정
+    age_cols = ['2023년06월_10세', '2023년06월_11세', '2023년06월_12세', '2023년06월_13세', '2023년06월_14세']  # 실제 파일의 열 이름으로 수정
 
+    # 데이터 처리
     data = data[[region_col] + age_cols]
 
     # 사용자 입력 받기
@@ -39,11 +38,11 @@ def main():
     fig, ax = plt.subplots()
     labels = ['중학생 인구', '기타 인구']
     sizes = [middle_school_ratio, 100 - middle_school_ratio]
-    colors = ['#ff9999','#66b3ff']
+    colors = ['#ff9999', '#66b3ff']
     explode = (0.1, 0)  # 중학생 인구 비율 강조
 
     ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
-            shadow=True, startangle=140)
+           shadow=True, startangle=140)
 
     ax.axis('equal')  # 원 그래프를 원형으로 그리기
 
@@ -51,4 +50,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
