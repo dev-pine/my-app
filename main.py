@@ -1,4 +1,5 @@
-# 필요한 라이브러리 불러오기
+
+# file_path = '202406_202406_연령별인구현황_월간.csv'
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -6,32 +7,32 @@ import matplotlib.pyplot as plt
 # CSV 파일 경로
 file_path = '202406_202406_연령별인구현황_월간.csv'
 
-# CSV 파일 읽기
-data = pd.read_csv(file_path, encoding='cp949')  # 한글 인코딩 처리
-
-# 데이터 확인
-st.write(data.head())
-# 스트림릿 코드
 def main():
     st.title("지역별 중학생 인구 비율")
 
     # CSV 파일 읽기
     data = pd.read_csv(file_path, encoding='cp949')  # 한글 인코딩 처리
 
-    # 데이터 처리
+    # 열 이름 확인
+    st.write("데이터 열 이름: ", data.columns)
+
     # 예시 데이터 컬럼명이 다를 수 있으므로, 컬럼명을 확인 후 적절히 수정해야 합니다.
     # 여기서는 '행정구역', '10세', '11세', '12세', '13세', '14세' 컬럼이 있다고 가정합니다.
-    data = data[['행정구역', '10세', '11세', '12세', '13세', '14세']]
+    # 실제로 존재하는 컬럼명을 바탕으로 수정합니다.
+    region_col = '행정구역별(읍면동)'
+    age_cols = ['2023년06월_10세', '2023년06월_11세', '2023년06월_12세', '2023년06월_13세', '2023년06월_14세']
+
+    data = data[[region_col] + age_cols]
 
     # 사용자 입력 받기
-    region = st.selectbox("지역을 선택하세요:", data['행정구역'].unique())
+    region = st.selectbox("지역을 선택하세요:", data[region_col].unique())
 
     # 선택한 지역 데이터 필터링
-    region_data = data[data['행정구역'] == region]
+    region_data = data[data[region_col] == region]
 
     # 중학생 인구 비율 계산
-    total_population = region_data[['10세', '11세', '12세', '13세', '14세']].sum(axis=1).values[0]
-    middle_school_population = region_data[['13세', '14세']].sum(axis=1).values[0]
+    total_population = region_data[age_cols].sum(axis=1).values[0]
+    middle_school_population = region_data[['2023년06월_13세', '2023년06월_14세']].sum(axis=1).values[0]
     middle_school_ratio = (middle_school_population / total_population) * 100
 
     # 원 그래프 그리기
@@ -50,3 +51,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
