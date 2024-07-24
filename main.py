@@ -4,7 +4,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 # CSV 파일 경로
-file_path = '/mnt/data/202406_202406_연령별인구현황_월간.csv'
+file_path = '202406_202406_연령별인구현황_월간.csv'
 
 # CSV 파일 읽기
 data = pd.read_csv(file_path, encoding='cp949')  # 한글 인코딩 처리
